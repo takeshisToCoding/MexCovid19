@@ -11,3 +11,11 @@ Datos obtenidos de [Comunicado Técnico Diario Oficial Mexico](http://www.gob.mx
 
 # Casos nuevos registrados por día (Actualizado 7 Abril)
 ![](https://github.com/edgarVazquez43/MexCovid19/blob/master/imgs/casos_nuevos_dia.jpeg "Logo Title Text 2")
+
+-----
+## To do:
+ - [ ]  Gráficas de decesos.
+ - [ ]  Gráfica de casos ambulatorios contra hospitalizados.
+ - [ ]  Estimación de casos hospitalizados.
+ - [ ]  Cálculo de curtosis.
+ 
