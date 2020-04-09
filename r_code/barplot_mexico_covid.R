@@ -3,7 +3,7 @@ casos_estados <- read.csv("../data/casos_estados.csv")
 #plot data
 data <- matrix(c(casos_estados$X6..Apr..2020, casos_estados$X7..Apr..2020, casos_estados$X8..Apr..2020), nrow = 3, ncol = 32, byrow = TRUE)
 barplot(data, ylim =c(0,1000), names.arg=c(as.character( casos_estados[,1]) ), las="2", col=c("red", "blue", "green"), 
-        beside = TRUE, cex.axis=1.0, main = "Casos acumulados por estado", ylab="Casos acumulados")
+        beside = TRUE, cex.axis=0.8, cex.names = 0.6, main = "Casos acumulados por estado", ylab="Casos acumulados")
 grid(nx = NULL, col = "gray", lty = "dotted", lwd = par("lwd"), equilogs = FALSE)
 text((1:32)*4,casos_estados$X8..Apr..2020+40, labels=c(as.character( casos_estados$X8..Apr..2020)), cex=0.8)
 legend(100, 900, legend=c("6-Abr-20", "7-Abr-20", "8-Abr-20"), col=c("red", "blue", "green"), lty=1, cex=0.9)
