@@ -1,33 +1,92 @@
 #Load the data
-casos_estados <- read.csv("../data/casos_estados.csv")
+data_frame <- read.csv("../data/casos_estados.csv")
+casos_estados <- data_frame[order(data_frame$X9..Apr..2020, decreasing = TRUE),]
 #plot data
-data <- matrix(c(casos_estados$X6..Apr..2020, casos_estados$X7..Apr..2020, casos_estados$X8..Apr..2020), nrow = 3, ncol = 32, byrow = TRUE)
-barplot(data, ylim =c(0,1000), names.arg=c(as.character( casos_estados[,1]) ), las="2", col=c("red", "blue", "green"), 
-        beside = TRUE, cex.axis=0.8, cex.names = 0.6, main = "Casos acumulados por estado", ylab="Casos acumulados")
+data <- matrix(c(casos_estados$X7..Apr..2020, casos_estados$X8..Apr..2020, casos_estados$X9..Apr..2020), nrow = 3, ncol = 32, byrow = TRUE)
+barplot(data, ylim =c(0,1000), 
+        names.arg=c(as.character( casos_estados[,1]) ), 
+        las="2", col=c("red", "blue", "green"), 
+        beside = TRUE, cex.axis=0.8, cex.names = 0.6, 
+        main = "Casos acumulados por estado", 
+        ylab="Casos acumulados")
 grid(nx = NULL, col = "gray", lty = "dotted", lwd = par("lwd"), equilogs = FALSE)
-text((1:32)*4,casos_estados$X8..Apr..2020+40, labels=c(as.character( casos_estados$X8..Apr..2020)), cex=0.8)
-legend(100, 900, legend=c("6-Abr-20", "7-Abr-20", "8-Abr-20"), col=c("red", "blue", "green"), lty=1, cex=0.9)
+text((1:32)*4,casos_estados$X9..Apr..2020+40, labels=c(as.character( casos_estados$X9..Apr..2020)), cex=0.8)
+legend(100, 900, legend=c("7-Abr-20", "8-Abr-20", "9-Abr-20"), col=c("red", "blue", "green"), lty=1, cex=0.9)
 
 #######
+total_datos = 43
+lim_1 = 4000
 casos_totales <- read.csv("../data/casos_totales.csv")
-data_total <- matrix(c(casos_totales$Casos.Confirmados, casos_totales$Muertes), nrow = 42, ncol = 2, byrow = FALSE)
+data_total <- matrix(c(casos_totales$Casos.Confirmados, casos_totales$Muertes), nrow = total_datos, ncol = 2, byrow = FALSE)
 matplot(data_total, type = c("l","l"), pch=c(1,2))
-matplot(data_total, type = c("o","o"), pch=c(1,2), xaxt="n", ylim = c(0, 4000), cex.main=1.0,
+matplot(data_total, type = c("o","o"), pch=c(1,2), xaxt="n", ylim = c(0, lim_1), cex.main=1.0,
         main = "Casos confirmados acumulados [TOTALES PAIS MEXICO]", ylab="Datos acumulados")
-axis(1,at=1:42,labels=casos_totales$FECHA, las=2, cex.axis=0.7)
+axis(1,at=1:total_datos, labels=casos_totales$FECHA, las=2, cex.axis=0.7)
 grid(nx = NULL, col = "lightgray", lty = "dotted", lwd = par("lwd"), equilogs = FALSE)
 text(casos_totales$Casos.Confirmados+100, labels=c(as.character( casos_totales$Casos.Confirmados)), cex=0.7)
 text(casos_totales$Muertes+100, labels=c(as.character( casos_totales$Muertes)), cex=0.7)
-legend(15, 4000, legend=c("Casos Confirmados", "Muertes"), col=c("black","red"), lty=3:4, cex=0.9)
+legend(15, lim_1-20, legend=c("Casos Confirmados", "Muertes"), col=c("black","red"), lty=3:4, cex=0.9)
 
 ##########
-data_cumulative <- matrix(c(casos_totales$casosNuevosDia, casos_totales$muertesNuevasDia), nrow = 42, ncol = 2, byrow = FALSE)
+data_cumulative <- matrix(c(casos_totales$casosNuevosDia, casos_totales$muertesNuevasDia), nrow = total_datos, ncol = 2, byrow = FALSE)
 matplot(data_cumulative[,1], type = c("b", "b"), pch=c(1,2), xaxt="n", ylim = c(0, 500), 
-        main = "Casos nuevos por dia", ylab="Datos nuevos por dia")
+        main = "Casos nuevos por dia", 
+        ylab="Datos nuevos por dia")
 polygon(c(casos_totales$casosNuevosDia, 0), col = "lightblue")
 polygon(c(casos_totales$muertesNuevasDia, 0), col = "red")
-axis(1,at=1:42, labels=casos_totales$FECHA, las=2, cex.axis=0.8)
+axis(1,at=1:total_datos, labels=casos_totales$FECHA, las=2, cex.axis=0.8)
 grid(nx = NULL, col = "lightgray", lty = "dotted", lwd = par("lwd"), equilogs = FALSE)
 text(casos_totales$casosNuevosDia+20, labels=c(as.character( casos_totales$casosNuevosDia)), cex=0.7)
 text(casos_totales$muertesNuevasDia+20, labels=c(as.character( casos_totales$muertesNuevasDia)), cex=0.7)
 legend(10, 500, legend=c("Casos confirmados nuevos por dia", "Muertes nuevas por dia"), col=c("blue","red"), lty=3:4, cex=0.9)
+
+##########
+lim_2 = 400
+barplot_muertes <- barplot(casos_totales$casosNuevosDia, ylim = c(0, lim_2), las="2", col=rgb(0.5,0.8,0.4,0.4),
+                           names.arg=c(as.character( casos_totales$FECHA)), cex.names = 0.8,
+                           main = "Casos nuevos por dia", 
+                           ylab="Datos nuevos por dia")
+grid(nx = NULL, col = "lightgray", lty = "dotted", lwd = par("lwd"), equilogs = FALSE)
+text(barplot_muertes, casos_totales$casosNuevosDia+10, labels=c(as.character( casos_totales$casosNuevosDia)), cex=0.6)
+legend(10, lim_2, legend=c("Casos confirmados por dia"), col=c(rgb(0.5,0.8,0.4,1.0)), lty=4, cex=0.9)
+
+##########
+lim_2 = 50
+barplot_muertes <- barplot(casos_totales$muertesNuevasDia, ylim = c(0, lim_2), las="2", col=rgb(0.8,0.5,0.4,0.4),
+        names.arg=c(as.character( casos_totales$FECHA)), cex.names = 0.8,
+        main = "Muertes por dia", 
+        ylab="Datos nuevos por dia")
+grid(nx = NULL, col = "lightgray", lty = "dotted", lwd = par("lwd"), equilogs = FALSE)
+text(barplot_muertes, casos_totales$muertesNuevasDia+2, labels=c(as.character( casos_totales$muertesNuevasDia)), cex=0.6)
+legend(10, lim_2, legend=c("Muertes nuevas por dia"), col=c("red"), lty=4, cex=0.9)
+
+
+
+#######
+lim_3 = 1.2
+casos_hospitalizados <- read.csv("../data/casos_ambulatorios_hospitalizados.csv")
+barplot_ambulatorios <- barplot(casos_hospitalizados$Ambulatorio...., ylim = c(0, lim_3), 
+                           las="2", col=rgb(0.2,0.6,0.4,0.4),
+                           names.arg=c(as.character(casos_hospitalizados$Fecha)), cex.names = 0.8,
+                           main = "Porcentaje de pacientes ambulatorios", 
+                           ylab="%")
+grid(nx = NULL, col = "lightgray", lty = "dotted", lwd = par("lwd"), equilogs = FALSE)
+text(barplot_ambulatorios, casos_hospitalizados$Ambulatorio....+.1, 
+     labels=c(as.character( casos_hospitalizados$Ambulatorio....)), cex=0.6)
+legend(10, lim_3, legend=c("No requieren hospitalizacion"), col=c(rgb(0.2,0.6,0.4,1.0)), lty=4, cex=0.9)
+
+#######
+lim_4 = 0.8
+barplot_hospitalizados <- barplot(casos_hospitalizados$Total.Hospitalizados...., ylim = c(0, lim_4), 
+                                las="2", col=rgb(0.6,0.2,0.4,0.4),
+                                names.arg=c(as.character(casos_hospitalizados$Fecha)), cex.names = 0.8,
+                                main = "Porcentaje de hospitalizados", 
+                                ylab="%")
+grid(nx = NULL, col = "lightgray", lty = "dotted", lwd = par("lwd"), equilogs = FALSE)
+text(barplot_ambulatorios, casos_hospitalizados$Total.Hospitalizados....+.1, 
+     labels=c(as.character( casos_hospitalizados$Total.Hospitalizados....)), cex=0.6)
+legend(4, lim_4-0.1, legend=c("Han requerido hospitalización"), col=c(rgb(0.6,0.2,0.4,1.0)), lty=4, cex=0.9)
+
+# ToDo:
+# - Desglose de casos hospitalizados
+# - barplot sobrepuestas para nuevos casos. ( par(new = T) )
